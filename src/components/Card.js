@@ -1,29 +1,27 @@
 import React from 'react';
 
-function Card(props) {
-  let buttonBackGroundColor = props.color;
-  const photo = require('./photos/' + props.color + '.jpg');
-  const isDisabled = props.clickCount > 1 ? true : false;
+const Card = ({ color, clickCount, handleClick, isRevealed, id }) => {
+  let buttonBackGroundColor = color;
+  const photo = require('./photos/' + color + '.jpg');
+  const isDisabled = clickCount > 1 ? true : false;
   const style = [
     {
-      backgroundColor:
-        props.isRevealed === true ? buttonBackGroundColor : 'white',
+      backgroundColor: isRevealed === true ? buttonBackGroundColor : 'white',
     },
   ];
-
-  // let buttonBackGroundColor = props.clicked === false ? 'white' : props.color;
   return (
     <button
+      key={id}
       disabled={isDisabled}
-      id={props.id}
-      onClick={props.handleClick}
+      id={id}
+      onClick={handleClick}
       className="card"
       style={style[0]}
-      color={props.color}
+      color={color}
     >
-      {props.isRevealed === false ? '?' : <img src={photo} alt="df" />}
+      {isRevealed === false ? '?' : <img src={photo} alt="df" />}
     </button>
   );
-}
+};
 
 export default Card;

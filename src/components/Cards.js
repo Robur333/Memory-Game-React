@@ -1,5 +1,4 @@
-import { click } from '@testing-library/user-event/dist/click';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Card from './Card';
 import ScoreBar from './ScoreBar';
 import logo from './photos/logo.png';
@@ -25,9 +24,7 @@ const cardData = [
   { id: 16, color: 'zosia', isRevealed: false, isMatched: false },
 ];
 
-const shuffledData = shuffle(cardData);
-
-function shuffle(array) {
+const shuffle = (array) => {
   let currentIndex = array.length,
     randomIndex;
   while (currentIndex !== 0) {
@@ -39,24 +36,24 @@ function shuffle(array) {
     ];
   }
   return array;
-}
-
-const Cards = () => {
+};
+const shuffledData = shuffle(cardData);
+export const Cards = () => {
   const [cardStatus, setCardStatus] = useState(shuffledData);
   const [clickCount, setCardCount] = useState(0);
 
-  function pushHistoryIntoArray(event) {
+  const pushHistoryIntoArray = (event) => {
     clickedHistoryColor.push(event.target.getAttribute('color'));
-  }
+  };
 
-  function areColorsMatching() {
+  const areColorsMatching = () => {
     return clickedHistoryColor[clickedHistoryColor.length - 1] ===
       clickedHistoryColor[clickedHistoryColor.length - 2]
       ? true
       : false;
-  }
+  };
 
-  function unfocusClickedBoxesAfterDelay() {
+  const unfocusClickedBoxesAfterDelay = () => {
     setTimeout(() => {
       setCardStatus((prevStatus) => {
         return prevStatus.map((box) => {
@@ -66,9 +63,9 @@ const Cards = () => {
         });
       });
     }, 500);
-  }
+  };
 
-  function revealClickedBox(event) {
+  const revealClickedBox = (event) => {
     setCardCount(clickCount + 1);
     setCardStatus((prevStatus) => {
       return prevStatus.map((box) => {
@@ -77,24 +74,24 @@ const Cards = () => {
           : box;
       });
     });
-  }
+  };
 
-  function revealAllBoxes() {
+  const revealAllBoxes = () => {
     setCardStatus((prevStatus) => {
       return prevStatus.map((box) => {
         return { ...box, isRevealed: true };
       });
     });
-  }
-  function resetAllboxes() {
+  };
+  const resetAllboxes = () => {
     setCardStatus((prevStatus) => {
       return prevStatus.map((box) => {
         return { ...box, isRevealed: false, isMatched: false };
       });
     });
-  }
+  };
 
-  function toggleMatchAtributte(event) {
+  const toggleMatchAtributte = (event) => {
     setCardStatus((prevStatus) => {
       return prevStatus.map((box) => {
         return box.color === event.target.getAttribute('color')
@@ -105,9 +102,9 @@ const Cards = () => {
           : box;
       });
     });
-  }
+  };
 
-  function resetGame(event) {
+  const resetGame = (event) => {
     resetAllboxes(event);
     const mixedData = shuffle(cardData);
     setCardStatus(mixedData);
@@ -115,18 +112,15 @@ const Cards = () => {
     setTimeout(() => {
       resetAllboxes(event);
     }, 1000);
-  }
+  };
 
-  function clickCard(event) {
+  const clickCard = (event) => {
     revealClickedBox(event);
 
     pushHistoryIntoArray(event);
 
-    console.log(clickCount);
-
     setTimeout(() => {
       if (clickCount === 1 && areColorsMatching() === true) {
-        console.log('pedaall');
         toggleMatchAtributte(event);
         setTimeout(() => {
           setCardCount(0);
@@ -140,7 +134,7 @@ const Cards = () => {
         }, 550);
       }
     }, 1000);
-  }
+  };
 
   const mappedArray = cardStatus.map((card) => (
     <div>
@@ -168,5 +162,3 @@ const Cards = () => {
     </div>
   );
 };
-
-export default Cards;
